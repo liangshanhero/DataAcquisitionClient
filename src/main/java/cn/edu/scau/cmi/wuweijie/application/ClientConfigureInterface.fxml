@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+
+
+<BorderPane prefHeight="585.0" prefWidth="450.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="cn.edu.scau.cmi.wuweijie.application.ClientConfigureController">
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label prefHeight="17.0" prefWidth="449.0" text="%company">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="companies" prefHeight="27.0" prefWidth="444.0" promptText="%select.company" />
+            <Label prefHeight="17.0" prefWidth="511.0" text="%type">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="types" prefHeight="27.0" prefWidth="465.0" promptText="%select.type" />
+            <Label prefHeight="17.0" prefWidth="436.0" text="%project">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="projects" prefHeight="27.0" prefWidth="487.0" promptText="%select.project" />
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+         </padding>
+      </VBox>
+   </center>
+</BorderPane>

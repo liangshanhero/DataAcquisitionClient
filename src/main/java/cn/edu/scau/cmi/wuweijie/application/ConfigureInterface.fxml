@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane prefHeight="720.0" prefWidth="510.0" stylesheets="/cn/edu/scau/cmi/wuweijie/application/ConfigureInterface.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cn.edu.scau.cmi.wuweijie.application.ConfigureController">
+	<center>
+		<TabPane prefHeight="768.0" prefWidth="1024.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+			<tabs>
+				<Tab text="%project.water">
+					<content>
+						<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="735.0" prefWidth="559.0">
+							<children>
+								<VBox prefHeight="684.0" prefWidth="510.0">
+									<children>
+										<HBox prefHeight="0.0" prefWidth="0.0">
+											<children>
+												<Label prefHeight="28.0" prefWidth="125.0" text="%client.database.url" />
+												<TextField fx:id="clientDatabaseUrl" prefHeight="27.0" prefWidth="391.0" promptText="client.database.url" />
+											</children>
+											<padding>
+												<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+											</padding>
+										</HBox>
+										<HBox prefHeight="0.0" prefWidth="0.0">
+											<children>
+												<Label prefHeight="28.0" prefWidth="125.0" text="%client.database.user" />
+												<TextField fx:id="clientDatabaseUser" prefHeight="27.0" prefWidth="390.0" promptText="client.database.user" />
+											</children>
+											<padding>
+												<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+											</padding>
+										</HBox>
+										<HBox prefHeight="0.0" prefWidth="0.0">
+											<children>
+												<Label prefHeight="27.0" prefWidth="125.0" text="%client.database.password" />
+												<PasswordField fx:id="clientDatabasePassword" prefHeight="27.0" prefWidth="390.0" promptText="client.database.password" />
+											</children>
+											<padding>
+												<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+											</padding>
+										</HBox>
+										<Button fx:id="testClientDatabaseConnection" mnemonicParsing="false" prefHeight="33.0" prefWidth="490.0" text="%client.database.test">
+											<opaqueInsets>
+												<Insets />
+											</opaqueInsets>
+											<VBox.margin>
+												<Insets left="10.0" right="10.0" />
+											</VBox.margin>
+										</Button>
+                              <Button fx:id="getProjects" mnemonicParsing="false" prefHeight="32.0" prefWidth="490.0" text="%get.projects">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </VBox.margin>
+                              </Button>
+                              <ComboBox fx:id="projectsBox" prefHeight="27.0" prefWidth="603.0" promptText="%select.project">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </VBox.margin>
+                              </ComboBox>
+                              <HBox prefHeight="0.0" prefWidth="0.0">
+                                 <children>
+                                    <Label prefHeight="27.0" prefWidth="153.0" text="%quartz.water.interval" />
+                                    <TextField fx:id="quartzWaterInterval" alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="77.0" promptText="quartz.water.interval" text="60" />
+                                    <Label prefHeight="27.0" prefWidth="64.0" text="%timeunit.second" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="0.0" prefWidth="510.0" />
+										<Button fx:id="startProjectWater" mnemonicParsing="false" prefHeight="51.0" prefWidth="490.0" text="%start.project.water">
+											<VBox.margin>
+												<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+											</VBox.margin>
+                                 <font>
+                                    <Font size="19.0" />
+                                 </font>
+										</Button>
+									</children>
+								</VBox>
+							</children>
+						</AnchorPane>
+					</content>
+				</Tab>
+				<Tab text="%project.led">
+					<content>
+						<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <VBox layoutX="-3.0" layoutY="-3.0" prefHeight="452.0" prefWidth="516.0">
+                           <children>
+                              <HBox prefHeight="0.0" prefWidth="0.0">
+                                 <children>
+                                    <Label prefHeight="27.0" prefWidth="120.0" text="%quartz.led.interval" />
+                                    <TextField fx:id="quartzLedInterval" alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="77.0" promptText="quartz.led.interval" text="60" />
+                                    <Label prefHeight="27.0" prefWidth="64.0" text="%timeunit.second" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox prefHeight="0.0" prefWidth="0.0">
+                                 <children>
+                                    <Label prefHeight="27.0" prefWidth="120.0" text="%led.generator.fluctuation" />
+                                    <TextField fx:id="ledGeneratorFluctuation" alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="77.0" promptText="led.generator.fluctuation" text="0.5" />
+                                    <Label prefHeight="27.0" prefWidth="289.0" text="取值为0~1之间的小数(例如:0.5)" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </HBox>
+                              <Button fx:id="startProjectLed" mnemonicParsing="false" prefHeight="51.0" prefWidth="540.0" text="%start.project.led">
+                                 <font>
+                                    <Font size="19.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </VBox.margin>
+                              </Button>
+                           </children>
+                        </VBox>
+                     </children></AnchorPane>
+					</content>
+				</Tab>
+			</tabs>
+		</TabPane>
+	</center>
+   <top>
+		<VBox prefHeight="246.0" prefWidth="510.0" BorderPane.alignment="CENTER">
+			<children>
+				<HBox prefHeight="0.0" prefWidth="0.0">
+					<children>
+						<Label prefHeight="28.0" prefWidth="125.0" text="%server.database.url" />
+						<TextField fx:id="serverDatabaseUrl" prefHeight="27.0" prefWidth="391.0" promptText="server.database.url" />
+					</children>
+					<padding>
+						<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+					</padding>
+				</HBox>
+				<HBox prefHeight="0.0" prefWidth="0.0">
+					<children>
+						<Label prefHeight="28.0" prefWidth="125.0" text="%server.database.user" />
+						<TextField fx:id="serverDatabaseUser" prefHeight="27.0" prefWidth="390.0" promptText="server.database.user" />
+					</children>
+					<padding>
+						<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+					</padding>
+				</HBox>
+				<HBox prefHeight="0.0" prefWidth="0.0">
+					<children>
+						<Label prefHeight="27.0" prefWidth="125.0" text="%server.database.password" />
+						<PasswordField fx:id="serverDatabasePassword" prefHeight="27.0" prefWidth="390.0" promptText="server.database.password" />
+					</children>
+					<padding>
+						<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+					</padding>
+				</HBox>
+				<Button fx:id="testServerDatabaseConnection" mnemonicParsing="false" prefHeight="32.0" prefWidth="490.0" text="%server.database.test">
+					<VBox.margin>
+						<Insets bottom="10.0" left="10.0" right="10.0" />
+					</VBox.margin>
+				</Button>
+            <Button fx:id="connectDatabase" mnemonicParsing="false" prefHeight="46.0" prefWidth="490.0" text="%connect.database">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Button>
+			</children>
+		</VBox>
+   </top>
+</BorderPane>

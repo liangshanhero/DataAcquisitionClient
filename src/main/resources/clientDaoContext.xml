@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<bean id="clientDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass" value="com.mysql.jdbc.Driver" />
+		<property name="jdbcUrl" value="${client.database.url}" />
+		<property name="user" value="${client.database.user}" />
+		<property name="password" value="${client.database.password}" />
+		<property name="maxPoolSize" value="10" />
+		<property name="minPoolSize" value="1" />
+		<property name="initialPoolSize" value="1" />
+		<property name="maxIdleTime" value="30" />
+	</bean>
+
+	<bean id="clientSessionFactory"
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<property name="dataSource" ref="clientDataSource" />
+
+		<property name="annotatedClasses">
+			<list>
+				<value>cn.edu.scau.cmi.wuweijie.entity.client.Syncdata</value>
+				<value>cn.edu.scau.cmi.wuweijie.entity.client.Celve</value>
+			</list>
+		</property>
+
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+				<!-- <prop key="hibernate.hbm2ddl.auto">update</prop> -->
+				<!--<prop key="hibernate.format_sql">true</prop> -->
+				<!--<prop key="hibernate.show_sql">true</prop> -->
+				<!--<prop key="hibernate.cache.use_second_level_cache">true</prop> -->
+			</props>
+		</property>
+	</bean>
+
+	<bean id="SyncdataDAO" class="cn.edu.scau.cmi.wuweijie.entity.client.SyncdataDAO">
+		<property name="sessionFactory">
+			<ref bean="clientSessionFactory" />
+		</property>
+	</bean>
+
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="clientDataSource" />
+	</bean>
+
+	<bean id="CelveDAO" class="cn.edu.scau.cmi.wuweijie.entity.client.CelveDAO">
+		<property name="sessionFactory">
+			<ref bean="clientSessionFactory" />
+		</property>
+	</bean>
+
+</beans>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>#{'file:' + propertyFileName}</value>
+				<!-- <value>#{'file:' + batchRecordFileName}</value> -->
+			</list>
+		</property>
+	</bean>
+
+	<bean id="date" class="java.util.Date" scope="prototype" />
+
+	<!-- <bean id="uploadRouteBuilder" class="cn.edu.scau.cmi.wuweijie.ftp.UploadRouteBuilder" 
+		lazy-init="true"> <property name="uploadFrom" value="${upload.from}" /> <property 
+		name="uploadTo" value="${upload.to}" /> </bean> <bean id="downloadRouteBuilder" 
+		class="cn.edu.scau.cmi.wuweijie.ftp.DownloadRouteBuilder" lazy-init="true"> 
+		<property name="downloadFrom" value="${download.from}" /> <property name="downloadTo" 
+		value="${download.to}" /> </bean> <bean id="ftpLauncher" class="cn.edu.scau.cmi.wuweijie.ftp.FTPLauncher" 
+		lazy-init="true"> <property name="downloadRouteBuilder" ref="downloadRouteBuilder" 
+		/> <property name="uploadRouteBuilder" ref="uploadRouteBuilder" /> </bean> -->
+	<bean id="waterProjectScheduleLauncher" class="cn.edu.scau.cmi.wuweijie.quartz.ScheduleLauncher"
+		lazy-init="true">
+		<property name="intervalSeconds" value="${quartz.interval}" />
+		<property name="job">
+			<bean class="cn.edu.scau.cmi.wuweijie.quartz.WaterProjectQuartzJob"></bean>
+		</property>
+		<property name="jobName" value="waterProject" />
+	</bean>
+
+	<bean id="ledProjectScheduleLauncher" class="cn.edu.scau.cmi.wuweijie.quartz.ScheduleLauncher"
+		lazy-init="true">
+		<property name="intervalSeconds" value="${quartz.interval}" />
+		<property name="job">
+			<bean class="cn.edu.scau.cmi.wuweijie.quartz.LedProjectQuartzJob"></bean>
+		</property>
+		<property name="jobName" value="ledProject" />
+	</bean>
+
+	<bean id="strategyScheduleLauncher" class="cn.edu.scau.cmi.wuweijie.quartz.ScheduleLauncher"
+		lazy-init="true">
+		<property name="intervalSeconds" value="${quartz.interval}" />
+		<property name="job">
+			<bean class="cn.edu.scau.cmi.wuweijie.quartz.StrategyQuartzJob" />
+		</property>
+		<property name="jobName" value="strategySynchronization" />
+	</bean>
+
+	<bean id="scheduleLauncher" class="cn.edu.scau.cmi.wuweijie.quartz.ScheduleLauncher"
+		lazy-init="true">
+		<property name="intervalSeconds" value="120" />
+	</bean>
+
+	<bean id="ledDataFactory" class="cn.edu.scau.cmi.wuweijie.utils.led.LedDataFactory">
+		<lookup-method name="getDate" bean="date" />
+		<property name="fluctuation" value="0.1" />
+		<property name="intervalSecond" value="${quartz.interval}" />
+		<property name="ledValueGenerator" ref="ledValueGenerator" />
+	</bean>
+
+	<bean id="ledValueGenerator"
+		class="cn.edu.scau.cmi.wuweijie.utils.led.impl.LedValueGeneratorImpl">
+		<property name="dataSource" ref="serverDataSource" />
+	</bean>
+
+	<bean id="resourceBundle" class="java.util.PropertyResourceBundle">
+		<constructor-arg>
+			<bean class="java.io.FileInputStream">
+				<constructor-arg value="parameterMapper.properties" />
+			</bean>
+		</constructor-arg>
+	</bean>
+
+	<bean id="whstrategyConverter" class="cn.edu.scau.cmi.wuweijie.utils.WhstrategyConverter">
+		<property name="bundle" ref="resourceBundle" />
+		<property name="whstrategytypeDAO" ref="WhstrategytypeDAO" />
+	</bean>
+
+</beans>

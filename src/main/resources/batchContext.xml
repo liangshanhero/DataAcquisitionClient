@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+           http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/batch
+           http://www.springframework.org/schema/batch/spring-batch-3.0.xsd">
+
+	<!-- <job id="db2xlsJob" xmlns="http://www.springframework.org/schema/batch"> 
+		<step id="step"> <tasklet> <chunk reader="databaseItemReader" writer="officeItemWriter" 
+		commit-interval="10000"> </chunk> </tasklet> </step> </job> -->
+	<!-- <job id="db2dbJob" xmlns="http://www.springframework.org/schema/batch"> 
+		<step id="step1"> <tasklet> <chunk reader="databaseItemReader" writer="hwdataItemWriter" 
+		commit-interval="500"></chunk> </tasklet> </step> </job> -->
+	<job id="db2dbJob" xmlns="http://www.springframework.org/schema/batch">
+		<step id="step1" next="step2">
+			<tasklet>
+				<chunk reader="dataJdbcItemReader" writer="siteDataItemWriter"
+					commit-interval="100"></chunk>
+			</tasklet>
+		</step>
+		<step id="step2">
+			<tasklet>
+				<chunk reader="statusJdbcItemReader" writer="siteStatusItemWriter"
+					commit-interval="100"></chunk>
+			</tasklet>
+		</step>
+	</job>
+
+	<bean id="batchRecordFile" class="java.lang.String">
+		<!-- <constructor-arg value="${batch.record.file}" /> -->
+		<constructor-arg value="records.properties" />
+	</bean>
+
+	<bean id="xssfWorkbook" class="org.apache.poi.xssf.usermodel.XSSFWorkbook"
+		scope="prototype" />
+
+	<!-- <bean id="officeItemWriter" class="cn.edu.scau.cmi.wuweijie.batch.writer.FixedItemWriter" 
+		lazy-init="true"> <lookup-method name="getDate" bean="date" /> <lookup-method 
+		name="getWorkbook" bean="xssfWorkbook" /> <property name="fileNameDateFormat" 
+		value="yyyyMMddHHmmss" /> <property name="iDateFormat" value="yyyy/MM/dd 
+		HH:mm:ss" /> <property name="dataCompany" value="${data.company}" /> <property 
+		name="dataProject" value="${data.project}" /> <property name="dataType" value="${data.type}" 
+		/> <property name="batchRecordFile" value="${batch.record.file}" /> <property 
+		name="exportDir" value="${export.dir}" /> </bean> -->
+	<bean id="hibernateItemWriter"
+		class="org.springframework.batch.item.database.HibernateItemWriter">
+		<property name="sessionFactory" ref="serverSessionFactory" />
+	</bean>
+
+	<bean id="hwdataItemWriter"
+		class="cn.edu.scau.cmi.wuweijie.batch.writer.WhbuildingItemWriter">
+		<property name="whbuildingDAO" ref="WhbuildingDAO" />
+		<property name="whdeviceDAO" ref="WhdeviceDAO" />
+		<property name="whdevicedataDAO" ref="WhdevicedataDAO" />
+		<property name="whdatatypeDAO" ref="WhdatatypeDAO" />
+		<property name="batchRecordFile" ref="batchRecordFileName" />
+		<lookup-method name="getConverter" bean="whdataConverter" />
+	</bean>
+
+	<bean id="siteItemWriter" abstract="true"
+		class="cn.edu.scau.cmi.wuweijie.batch.writer.SiteDataItemWriter">
+		<property name="batchRecordFile" ref="batchRecordFileName" />
+		<property name="whdatatypeDAO" ref="WhdatatypeDAO" />
+		<property name="whdeviceDAO" ref="WhdeviceDAO" />
+		<property name="whdevicedataDAO" ref="WhdevicedataDAO" />
+		<property name="bundle" ref="resourceBundle" />
+		<property name="whdatatype2whdeviceDAO" ref="Whdatatype2whdeviceDAO" />
+		<property name="projectDAO" ref="ProjectDAO" />
+		<property name="whbuildingDAO" ref="WhbuildingDAO" />
+	</bean>
+
+	<bean id="siteDataItemWriter" parent="siteItemWriter">
+		<property name="parameterName" value="data.lastId" />
+	</bean>
+	<bean id="siteStatusItemWriter" parent="siteItemWriter">
+		<property name="parameterName" value="status.lastId" />
+	</bean>
+
+	<bean id="whdataConverter" class="cn.edu.scau.cmi.wuweijie.utils.CSPersistObjectConverter"
+		scope="prototype">
+		<property name="whbuildingDAO" ref="WhbuildingDAO" />
+		<property name="whdeviceDAO" ref="WhdeviceDAO" />
+		<property name="whdevicedataDAO" ref="WhdevicedataDAO" />
+		<property name="whdatatypeDAO" ref="WhdatatypeDAO" />
+	</bean>
+
+	<bean id="itemProcessor"
+		class="cn.edu.scau.cmi.wuweijie.batch.processor.RawItemProcessor" />
+
+	<bean id="typeConvertProcessor"
+		class="cn.edu.scau.cmi.wuweijie.batch.processor.TypeConvertProcessor">
+	</bean>
+
+	<bean id="dataRowMapper" class="cn.edu.scau.cmi.wuweijie.batch.rowmapper.DataRowMapper" />
+
+	<bean id="dataJdbcItemReader"
+		class="org.springframework.batch.item.database.JdbcCursorItemReader"
+		scope="step">
+		<property name="dataSource" ref="clientDataSource" />
+		<property name="rowMapper" ref="dataRowMapper" />
+		<property name="sql" value="select * from data where ID > ?" />
+		<property name="preparedStatementSetter">
+			<bean
+				class="org.springframework.batch.core.resource.ListPreparedStatementSetter"
+				scope="step">
+				<property name="parameters">
+					<list>
+						<value>#{jobParameters['data.lastId']}</value>
+					</list>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="statusJdbcItemReader"
+		class="org.springframework.batch.item.database.JdbcCursorItemReader"
+		scope="step">
+		<property name="rowMapper" ref="dataRowMapper" />
+		<property name="dataSource" ref="clientDataSource" />
+		<property name="sql" value="select * from zt where ID > ?" />
+		<property name="preparedStatementSetter">
+			<bean
+				class="org.springframework.batch.core.resource.ListPreparedStatementSetter"
+				scope="step">
+				<property name="parameters">
+					<list>
+						<value>#{jobParameters['status.lastId']}</value>
+					</list>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="parameters" class="java.util.Properties">
+	</bean>
+	<bean
+		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="parameters" />
+		<property name="targetMethod" value="setProperty" />
+		<property name="arguments">
+			<list>
+				<value type="java.lang.String">data.lastId</value>
+				<value type="java.lang.String">0</value>
+			</list>
+		</property>
+	</bean>
+	<bean
+		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="parameters" />
+		<property name="targetMethod" value="setProperty" />
+		<property name="arguments">
+			<list>
+				<value type="java.lang.String">status.lastId</value>
+				<value type="java.lang.String">0</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="databaseItemReader"
+		class="org.springframework.batch.item.database.HibernateCursorItemReader"
+		scope="step">
+		<property name="sessionFactory" ref="clientSessionFactory" />
+		<property name="queryString" value="from Syncdata where ID > :lastId" />
+		<property name="parameterValues">
+			<map>
+				<entry key="lastId" value="#{jobParameters['lastId']}" />
+			</map>
+		</property>
+		<property name="fetchSize" value="200" />
+	</bean>
+
+	<bean id="jobLauncher"
+		class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+		<property name="jobRepository" ref="jobRepository" />
+	</bean>
+
+	<bean id="jobRepository"
+		class="org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean">
+		<property name="transactionManager" ref="transactionManager" />
+	</bean>
+
+</beans>

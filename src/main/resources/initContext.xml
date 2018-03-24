@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- 配置文件的文件名 -->
+	<bean id="propertyFileName" class="java.lang.String">
+		<constructor-arg type="java.lang.String" value="client.properties" />
+	</bean>
+
+	<bean id="batchRecordFileName" class="java.lang.String">
+		<constructor-arg type="java.lang.String" value="records.properties" />
+	</bean>
+
+	<bean id="serverDatabaseConfigureInterface" class="javafx.fxml.FXMLLoader"
+		lazy-init="true" factory-method="load">
+		<constructor-arg type="java.net.URL">
+			<bean factory-bean="bootstrapClass" factory-method="getResource">
+				<constructor-arg type="java.lang.String"
+					value="/cn/edu/scau/cmi/wuweijie/application/ServerDatabaseConfigureInterface.fxml" />
+			</bean>
+		</constructor-arg>
+		<constructor-arg type="java.util.ResourceBundle">
+			<bean class="java.util.ResourceBundle" factory-method="getBundle">
+				<constructor-arg type="java.lang.String"
+					value="cn.edu.scau.cmi.wuweijie.application.ServerDatabaseConfigureInterface" />
+			</bean>
+		</constructor-arg>
+	</bean>
+
+	<bean id="clientConfigureInterface" class="javafx.fxml.FXMLLoader"
+		lazy-init="true" factory-method="load">
+		<constructor-arg type="java.net.URL">
+			<bean factory-bean="bootstrapClass" factory-method="getResource">
+				<constructor-arg type="java.lang.String"
+					value="/cn/edu/scau/cmi/wuweijie/application/ClientConfigureInterface.fxml" />
+			</bean>
+		</constructor-arg>
+		<constructor-arg type="java.util.ResourceBundle">
+			<bean class="java.util.ResourceBundle" factory-method="getBundle">
+				<constructor-arg type="java.lang.String"
+					value="cn.edu.scau.cmi.wuweijie.application.ClientConfigureInterface" />
+			</bean>
+		</constructor-arg>
+	</bean>
+
+	<bean id="waterProjectInterface" class="javafx.fxml.FXMLLoader"
+		lazy-init="true" factory-method="load">
+		<constructor-arg type="java.net.URL">
+			<bean factory-bean="bootstrapClass" factory-method="getResource">
+				<constructor-arg type="java.lang.String"
+					value="/cn/edu/scau/cmi/wuweijie/application/WaterProjectInterface.fxml" />
+			</bean>
+		</constructor-arg>
+		<constructor-arg type="java.util.ResourceBundle">
+			<bean class="java.util.ResourceBundle" factory-method="getBundle">
+				<constructor-arg type="java.lang.String"
+					value="cn.edu.scau.cmi.wuweijie.application.WaterProjectInterface" />
+			</bean>
+		</constructor-arg>
+	</bean>
+
+	<bean id="ledProjectInterface" class="javafx.fxml.FXMLLoader"
+		lazy-init="true" factory-method="load">
+		<constructor-arg type="java.net.URL">
+			<bean factory-bean="bootstrapClass" factory-method="getResource">
+				<constructor-arg type="java.lang.String"
+					value="/cn/edu/scau/cmi/wuweijie/application/LedProjectInterface.fxml" />
+			</bean>
+		</constructor-arg>
+		<constructor-arg type="java.util.ResourceBundle">
+			<bean class="java.util.ResourceBundle" factory-method="getBundle">
+				<constructor-arg type="java.lang.String"
+					value="cn.edu.scau.cmi.wuweijie.application.LedProjectInterface" />
+			</bean>
+		</constructor-arg>
+	</bean>
+
+	<bean id="bootstrap" class="cn.edu.scau.cmi.wuweijie.Bootstrap" />
+	<bean id="bootstrapClass" factory-bean="bootstrap" factory-method="getClass" />
+
+
+	</beans>

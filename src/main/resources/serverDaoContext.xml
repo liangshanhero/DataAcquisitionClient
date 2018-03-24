@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<tx:annotation-driven transaction-manager="serverTransactionManager" />
+
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>#{'file:' + propertyFileName}</value>
+				<!-- <value>#{'file:' + batchRecordFileName}</value> -->
+			</list>
+		</property>
+	</bean>
+
+	<bean id="serverDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass" value="com.mysql.jdbc.Driver" />
+		<property name="jdbcUrl" value="${server.database.url}" />
+		<property name="user" value="${server.database.user}" />
+		<property name="password" value="${server.database.password}" />
+	</bean>
+
+	<bean id="serverSessionFactory"
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<property name="dataSource" ref="serverDataSource" />
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+				<!-- <prop key="hibernate.hbm2ddl.auto">update</prop> -->
+				<!-- <prop key="hibernate.format_sql">true</prop> -->
+				<!-- <prop key="hibernate.show_sql">true</prop> -->
+			</props>
+		</property>
+
+		<property name="annotatedClasses">
+			<list>
+				<value>cn.edu.scau.cmi.wuweijie.entity.server.Whbuilding</value>
+				<value>cn.edu.scau.cmi.wuweijie.entity.server.Whdatatype</value>
+				<value>cn.edu.scau.cmi.wuweijie.entity.server.Whdevice</value>
+				<value>cn.edu.scau.cmi.wuweijie.entity.server.Whdevicedata</value>
+				<value>cn.edu.scau.cmi.wuweijie.entity.server.Project</value>
+				<value>cn.edu.scau.cmi.wuweijie.entity.server.Staff</value>
+				<value>cn.edu.scau.cmi.wuweijie.entity.server.Ledmeterdata</value>
+				<value>cn.edu.scau.cmi.wuweijie.entity.server.Ledmeter</value>
+				<value>cn.edu.scau.cmi.wuweijie.entity.server.Ledbuilding</value>
+				<value>cn.edu.scau.cmi.wuweijie.entity.server.Company</value>
+				<value>cn.edu.scau.cmi.wuweijie.entity.server.Cacsensordata</value>
+				<value>cn.edu.scau.cmi.wuweijie.entity.server.Cacsensor</value>
+				<value>cn.edu.scau.cmi.wuweijie.entity.server.Cacrecordtime</value>
+				<value>cn.edu.scau.cmi.wuweijie.entity.server.Cacmalfunction</value>
+				<value>cn.edu.scau.cmi.wuweijie.entity.server.Cacdevicedata</value>
+				<value>cn.edu.scau.cmi.wuweijie.entity.server.Cacdevice</value>
+				<value>cn.edu.scau.cmi.wuweijie.entity.server.Cac</value>
+				<value>cn.edu.scau.cmi.wuweijie.entity.server.Whstrategy</value>
+				<value>cn.edu.scau.cmi.wuweijie.entity.server.Whstrategytype</value>
+				<value>cn.edu.scau.cmi.wuweijie.entity.server.Whstrategydetail</value>
+				<value>cn.edu.scau.cmi.wuweijie.entity.server.Whdatatype2whdevice</value>
+			</list>
+		</property>
+
+	</bean>
+
+	<bean id="serverTransactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="serverDataSource" />
+	</bean>
+
+	<bean id="CacmalfunctionDAO"
+		class="cn.edu.scau.cmi.wuweijie.entity.server.CacmalfunctionDAO">
+		<property name="sessionFactory">
+			<ref bean="serverSessionFactory" />
+		</property>
+	</bean>
+	<bean id="LedbuildingDAO" class="cn.edu.scau.cmi.wuweijie.entity.server.LedbuildingDAO">
+		<property name="sessionFactory">
+			<ref bean="serverSessionFactory" />
+		</property>
+	</bean>
+	<bean id="WhdatatypeDAO" class="cn.edu.scau.cmi.wuweijie.entity.server.WhdatatypeDAO">
+		<property name="sessionFactory">
+			<ref bean="serverSessionFactory" />
+		</property>
+	</bean>
+	<bean id="WhdeviceDAO" class="cn.edu.scau.cmi.wuweijie.entity.server.WhdeviceDAO">
+		<property name="sessionFactory">
+			<ref bean="serverSessionFactory" />
+		</property>
+	</bean>
+
+	<bean id="CompanyDAO" class="cn.edu.scau.cmi.wuweijie.entity.server.CompanyDAO">
+		<property name="sessionFactory">
+			<ref bean="serverSessionFactory" />
+		</property>
+	</bean>
+	<bean id="LedmeterdataDAO" class="cn.edu.scau.cmi.wuweijie.entity.server.LedmeterdataDAO">
+		<property name="sessionFactory">
+			<ref bean="serverSessionFactory" />
+		</property>
+	</bean>
+	<bean id="CacdeviceDAO" class="cn.edu.scau.cmi.wuweijie.entity.server.CacdeviceDAO">
+		<property name="sessionFactory">
+			<ref bean="serverSessionFactory" />
+		</property>
+	</bean>
+	<bean id="CacsensorDAO" class="cn.edu.scau.cmi.wuweijie.entity.server.CacsensorDAO">
+		<property name="sessionFactory">
+			<ref bean="serverSessionFactory" />
+		</property>
+	</bean>
+	<bean id="WhbuildingDAO" class="cn.edu.scau.cmi.wuweijie.entity.server.WhbuildingDAO">
+		<property name="sessionFactory">
+			<ref bean="serverSessionFactory" />
+		</property>
+	</bean>
+	<bean id="CacrecordtimeDAO" class="cn.edu.scau.cmi.wuweijie.entity.server.CacrecordtimeDAO">
+		<property name="sessionFactory">
+			<ref bean="serverSessionFactory" />
+		</property>
+	</bean>
+	<bean id="CacdevicedataDAO" class="cn.edu.scau.cmi.wuweijie.entity.server.CacdevicedataDAO">
+		<property name="sessionFactory">
+			<ref bean="serverSessionFactory" />
+		</property>
+	</bean>
+	<bean id="LedmeterDAO" class="cn.edu.scau.cmi.wuweijie.entity.server.LedmeterDAO">
+		<property name="sessionFactory">
+			<ref bean="serverSessionFactory" />
+		</property>
+	</bean>
+	<bean id="CacDAO" class="cn.edu.scau.cmi.wuweijie.entity.server.CacDAO">
+		<property name="sessionFactory">
+			<ref bean="serverSessionFactory" />
+		</property>
+	</bean>
+	<bean id="ProjectDAO" class="cn.edu.scau.cmi.wuweijie.entity.server.ProjectDAO">
+		<property name="sessionFactory">
+			<ref bean="serverSessionFactory" />
+		</property>
+	</bean>
+	<bean id="StaffDAO" class="cn.edu.scau.cmi.wuweijie.entity.server.StaffDAO">
+		<property name="sessionFactory">
+			<ref bean="serverSessionFactory" />
+		</property>
+	</bean>
+	<bean id="WhdevicedataDAO" class="cn.edu.scau.cmi.wuweijie.entity.server.WhdevicedataDAO">
+		<property name="sessionFactory">
+			<ref bean="serverSessionFactory" />
+		</property>
+	</bean>
+	<bean id="CacsensordataDAO" class="cn.edu.scau.cmi.wuweijie.entity.server.CacsensordataDAO">
+		<property name="sessionFactory">
+			<ref bean="serverSessionFactory" />
+		</property>
+	</bean>
+	<bean id="WhstrategyDAO" class="cn.edu.scau.cmi.wuweijie.entity.server.WhstrategyDAO">
+		<property name="sessionFactory">
+			<ref bean="serverSessionFactory" />
+		</property>
+	</bean>
+	<bean id="WhstrategydetailDAO"
+		class="cn.edu.scau.cmi.wuweijie.entity.server.WhstrategydetailDAO">
+		<property name="sessionFactory">
+			<ref bean="serverSessionFactory" />
+		</property>
+	</bean>
+	<bean id="WhstrategytypeDAO"
+		class="cn.edu.scau.cmi.wuweijie.entity.server.WhstrategytypeDAO">
+		<property name="sessionFactory">
+			<ref bean="serverSessionFactory" />
+		</property>
+	</bean>
+	<bean id="Whdatatype2whdeviceDAO"
+		class="cn.edu.scau.cmi.wuweijie.entity.server.Whdatatype2whdeviceDAO">
+		<property name="sessionFactory">
+			<ref bean="serverSessionFactory" />
+		</property>
+	</bean></beans>

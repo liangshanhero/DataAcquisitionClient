@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane prefHeight="179.0" prefWidth="427.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cn.edu.scau.cmi.wuweijie.application.ServerDatabaseConfigureController">
+   <center>
+      <VBox prefHeight="181.0" prefWidth="427.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox prefHeight="0.0" prefWidth="427.0">
+               <children>
+                  <Label prefHeight="27.0" prefWidth="124.0" text="%server.database.ip">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="serverDatabaseIp" prefHeight="27.0" prefWidth="292.0" promptText="server.database.ip" />
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </HBox>
+            <HBox prefHeight="0.0" prefWidth="427.0">
+               <children>
+                  <Label prefHeight="27.0" prefWidth="124.0" text="%server.database.user">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="serverDatabaseUser" prefHeight="27.0" prefWidth="292.0" promptText="server.database.user" />
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </HBox>
+            <HBox prefHeight="0.0" prefWidth="427.0">
+               <children>
+                  <Label prefHeight="27.0" prefWidth="124.0" text="%server.database.password">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <PasswordField fx:id="serverDatabasePassword" prefHeight="27.0" prefWidth="292.0" promptText="server.database.password" />
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </HBox>
+            <Button fx:id="serverDatabaseConnect" mnemonicParsing="false" prefHeight="45.0" prefWidth="456.0" text="%server.database.connect">
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </Button>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>
