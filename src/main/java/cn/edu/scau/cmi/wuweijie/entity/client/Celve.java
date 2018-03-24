@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -11,7 +12,7 @@ import javax.persistence.Table;
  * Celve entity. @author MyEclipse Persistence Tools
  */
 @Entity
-@Table(name = "celve", catalog = "nanyida")
+@Table(name = "celve")
 
 public class Celve implements java.io.Serializable {
 
@@ -71,7 +72,7 @@ public class Celve implements java.io.Serializable {
 
 	// Property accessors
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 
 	@Column(name = "ID", unique = true, nullable = false)
 

@@ -87,9 +87,13 @@ public class WaterProjectController extends ConfigureControllerTemplate implemen
 							"classpath:batchContext.xml" },
 					Bootstrap.applicationContext);
 
-			Runnable waterProjectScheduleLauncher = Bootstrap.applicationContext.getBean("waterProjectScheduleLauncher", Runnable.class);
-			Bootstrap.executorService.execute(waterProjectScheduleLauncher);
 			
+			Runnable waterProjectScheduleLauncher = Bootstrap.applicationContext
+					.getBean("waterProjectScheduleLauncher", Runnable.class);
+			Bootstrap.executorService.execute(waterProjectScheduleLauncher);
+			Runnable strategyScheduleLauncher = Bootstrap.applicationContext.getBean("strategyScheduleLauncher",
+					Runnable.class);
+			Bootstrap.executorService.execute(strategyScheduleLauncher);
 			startProjectWater.setDisable(true);
 		});
 

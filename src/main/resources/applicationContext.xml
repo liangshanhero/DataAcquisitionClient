@@ -30,6 +30,12 @@
 			<bean class="cn.edu.scau.cmi.wuweijie.quartz.WaterProjectQuartzJob"></bean>
 		</property>
 		<property name="jobName" value="waterProject" />
+		<property name="schedulerProperties">
+			<props>
+				<prop key="org.quartz.scheduler.instanceName">waterProjectScheduleLauncher</prop>
+				<prop key="org.quartz.threadPool.threadCount">10</prop>
+			</props>
+		</property>
 	</bean>
 
 	<bean id="ledProjectScheduleLauncher" class="cn.edu.scau.cmi.wuweijie.quartz.ScheduleLauncher"
@@ -48,6 +54,12 @@
 			<bean class="cn.edu.scau.cmi.wuweijie.quartz.StrategyQuartzJob" />
 		</property>
 		<property name="jobName" value="strategySynchronization" />
+		<property name="schedulerProperties">
+			<props>
+				<prop key="org.quartz.scheduler.instanceName">strategyScheduleLauncher</prop>
+				<prop key="org.quartz.threadPool.threadCount">10</prop>
+			</props>
+		</property>
 	</bean>
 
 	<bean id="scheduleLauncher" class="cn.edu.scau.cmi.wuweijie.quartz.ScheduleLauncher"

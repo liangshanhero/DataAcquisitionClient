@@ -50,7 +50,7 @@ public class WhstrategyConverter {
 	}
 
 	public final static boolean notNull(Object o) {
-		return o == null;
+		return o != null;
 	}
 
 	public WhstrategytypeDAO getWhstrategytypeDAO() {

@@ -1,5 +1,7 @@
 package cn.edu.scau.cmi.wuweijie.quartz;
 
+import java.util.Properties;
+
 import org.quartz.Job;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
@@ -23,6 +25,8 @@ public class ScheduleLauncher implements Runnable {
 	private int intervalSeconds;
 	
 	private String jobName;
+	
+	private Properties schedulerProperties;
 
 	@Override
 	public void run() {
@@ -37,7 +41,9 @@ public class ScheduleLauncher implements Runnable {
 		Scheduler scheduler;
 		try {
 			// 启动调度器并传入调度任务
-			scheduler = new StdSchedulerFactory().getScheduler();
+			StdSchedulerFactory ssf = new StdSchedulerFactory();
+			ssf.initialize(schedulerProperties);
+			scheduler = ssf.getScheduler();
 			scheduler.start();
 			scheduler.scheduleJob(jobDetail, trigger);
 		} catch (SchedulerException e) {
@@ -68,4 +74,13 @@ public class ScheduleLauncher implements Runnable {
 	public void setJobName(String jobName) {
 		this.jobName = jobName;
 	}
+
+	public Properties getSchedulerProperties() {
+		return schedulerProperties;
+	}
+
+	public void setSchedulerProperties(Properties schedulerProperties) {
+		this.schedulerProperties = schedulerProperties;
+	}
+	
 }

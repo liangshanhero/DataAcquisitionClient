@@ -1,11 +1,14 @@
 package cn.edu.scau.cmi.wuweijie.quartz;
 
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -23,6 +26,8 @@ import cn.edu.scau.cmi.wuweijie.entity.server.WhstrategytypeDAO;
 import cn.edu.scau.cmi.wuweijie.utils.WhstrategyConverter;
 
 public class StrategyQuartzJob implements Job {
+	
+	private static final Log log = LogFactory.getLog(StrategyQuartzJob.class);
 
 	private CelveDAO celveDAO;
 
@@ -50,6 +55,7 @@ public class StrategyQuartzJob implements Job {
 
 	@Override
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
+		log.info("Synchronize strategy." + new Date());
 		List<Celve> all = getCelveDAO().findAll();
 		String regex = "([A-Za-z_]+)(\\d+)?";
 		Pattern pattern = Pattern.compile(regex);
@@ -82,10 +88,15 @@ public class StrategyQuartzJob implements Job {
 				// strategy not exists
 				if (strategy == null) {
 					strategy = new Whstrategy();
+					strategy.setWhdevice(device);
 					strategy.setName(strategyName);
 					strategy.setCreateDate(c.getTime2());
 					strategy.setEnable(c.getClsx() == 1);
-					strategy.setWhstrategydetails(getWhstrategyConverter().toDetail(c));
+					Set<Whstrategydetail> details = whstrategyConverter.toDetail(c);
+					for (Whstrategydetail d : details) {
+						d.setWhstrategy(strategy);
+					}
+					strategy.setWhstrategydetails(details);
 					getWhstrategyDAO().save(strategy);
 				} else {
 					// strategy exists

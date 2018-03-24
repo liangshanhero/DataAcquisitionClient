@@ -5,6 +5,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -14,7 +15,7 @@ import javax.persistence.Table;
  * Whstrategydetail entity. @author MyEclipse Persistence Tools
  */
 @Entity
-@Table(name = "whstrategydetail", catalog = "energydevice")
+@Table(name = "whstrategydetail")
 
 public class Whstrategydetail implements java.io.Serializable {
 
@@ -50,7 +51,7 @@ public class Whstrategydetail implements java.io.Serializable {
 
 	// Property accessors
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 
 	@Column(name = "id", unique = true, nullable = false)
 

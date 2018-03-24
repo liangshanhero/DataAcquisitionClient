@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -18,7 +19,7 @@ import javax.persistence.Table;
  * Whstrategy entity. @author MyEclipse Persistence Tools
  */
 @Entity
-@Table(name = "whstrategy", catalog = "energydevice")
+@Table(name = "whstrategy")
 
 public class Whstrategy implements java.io.Serializable {
 
@@ -51,7 +52,7 @@ public class Whstrategy implements java.io.Serializable {
 
 	// Property accessors
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 
 	@Column(name = "id", unique = true, nullable = false)
 
@@ -114,7 +115,7 @@ public class Whstrategy implements java.io.Serializable {
 		this.name = name;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "whstrategy")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "whstrategy")
 
 	public Set<Whstrategydetail> getWhstrategydetails() {
 		return this.whstrategydetails;

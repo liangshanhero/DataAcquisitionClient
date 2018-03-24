@@ -34,6 +34,7 @@ import javafx.scene.control.TextInputControl;
  * @author TESLA_CN
  *
  */
+@Deprecated
 public class ConfigureController implements Initializable {
 
 	private static final Log log = LogFactory.getLog(ConfigureController.class);
