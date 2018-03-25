@@ -25,6 +25,12 @@ public class Whstrategy implements java.io.Serializable {
 
 	// Fields
 
+	@Override
+	public String toString() {
+		return "Whstrategy [id=" + id + ", whdevice=" + whdevice + ", enable=" + enable + ", createDate=" + createDate
+				+ ", remark=" + remark + ", name=" + name + "]";
+	}
+
 	private Long id;
 	private Whdevice whdevice;
 	private Boolean enable;

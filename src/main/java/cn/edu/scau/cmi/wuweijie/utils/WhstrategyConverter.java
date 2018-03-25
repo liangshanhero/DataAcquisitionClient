@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 import java.util.Set;
 
 import cn.edu.scau.cmi.wuweijie.entity.client.Celve;
+import cn.edu.scau.cmi.wuweijie.entity.server.Whstrategy;
 import cn.edu.scau.cmi.wuweijie.entity.server.Whstrategydetail;
 import cn.edu.scau.cmi.wuweijie.entity.server.WhstrategytypeDAO;
 
@@ -15,7 +16,7 @@ public class WhstrategyConverter {
 
 	private ResourceBundle bundle;
 
-	public Set<Whstrategydetail> toDetail(Celve c) {
+	public Set<Whstrategydetail> toDetail(Celve c, Whstrategy belongs) {
 		Set<Whstrategydetail> details = new HashSet<>();
 		Whstrategydetail detail = null;
 
@@ -25,6 +26,7 @@ public class WhstrategyConverter {
 			detail.setMax(c.getShutHh().doubleValue() * 60 + c.getShutMm().doubleValue());
 			detail.setTime(c.getTime2());
 			detail.setWhstrategytype(getWhstrategytypeDAO().getOrCreateByName("时间"));
+			detail.setWhstrategy(belongs);
 			details.add(detail);
 		}
 
@@ -34,6 +36,7 @@ public class WhstrategyConverter {
 			detail.setMax(c.getShutTemp());
 			detail.setTime(c.getTime2());
 			detail.setWhstrategytype(getWhstrategytypeDAO().getOrCreateByName("温度"));
+			detail.setWhstrategy(belongs);
 			details.add(detail);
 		}
 
@@ -43,6 +46,7 @@ public class WhstrategyConverter {
 			detail.setMax(c.getMaxlevel());
 			detail.setTime(c.getTime2());
 			detail.setWhstrategytype(getWhstrategytypeDAO().getOrCreateByName("水位"));
+			detail.setWhstrategy(belongs);
 			details.add(detail);
 		}
 

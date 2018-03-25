@@ -22,6 +22,11 @@ public class Whstrategytype implements java.io.Serializable {
 
 	// Fields
 
+	@Override
+	public String toString() {
+		return "Whstrategytype [id=" + id + ", name=" + name + "]";
+	}
+
 	private Long id;
 	private String name;
 	private Set<Whstrategydetail> whstrategydetails = new HashSet<Whstrategydetail>(0);

@@ -26,7 +26,7 @@ import cn.edu.scau.cmi.wuweijie.entity.server.WhstrategytypeDAO;
 import cn.edu.scau.cmi.wuweijie.utils.WhstrategyConverter;
 
 public class StrategyQuartzJob implements Job {
-	
+
 	private static final Log log = LogFactory.getLog(StrategyQuartzJob.class);
 
 	private CelveDAO celveDAO;
@@ -92,16 +92,26 @@ public class StrategyQuartzJob implements Job {
 					strategy.setName(strategyName);
 					strategy.setCreateDate(c.getTime2());
 					strategy.setEnable(c.getClsx() == 1);
-					Set<Whstrategydetail> details = whstrategyConverter.toDetail(c);
-					for (Whstrategydetail d : details) {
-						d.setWhstrategy(strategy);
-					}
+					Set<Whstrategydetail> details = whstrategyConverter.toDetail(c, strategy);
 					strategy.setWhstrategydetails(details);
 					getWhstrategyDAO().save(strategy);
 				} else {
 					// strategy exists
 					Set<Whstrategydetail> serverDetails = strategy.getWhstrategydetails();
-					Set<Whstrategydetail> clientDetails = getWhstrategyConverter().toDetail(c);
+					Set<Whstrategydetail> clientDetails = whstrategyConverter.toDetail(c, strategy);
+
+					// compare if enable
+					if ((c.getClsx() == 1) != strategy.getEnable()) {
+						if (c.getTime2().after(strategy.getCreateDate())) {
+							strategy.setEnable(c.getClsx() == 1);
+							strategy.setCreateDate(c.getTime2());
+							whstrategyDAO.merge(strategy);
+						} else {
+							c.setClsx(strategy.getEnable() ? 1 : 0);
+							c.setTime2(strategy.getCreateDate());
+							celveDAO.merge(c);
+						}
+					}
 
 					if (serverDetails.equals(clientDetails)) {
 						continue;
@@ -109,32 +119,37 @@ public class StrategyQuartzJob implements Job {
 
 					for (Whstrategydetail clientDetail : clientDetails) {
 						for (Whstrategydetail serverDetail : serverDetails) {
-							if (clientDetail.getWhstrategytype().equals(serverDetail.getWhstrategytype())
-									&& !clientDetail.equals(serverDetail)) {
-								if (clientDetail.getTime().after(serverDetail.getTime())) {
-									serverDetail.setMin(clientDetail.getMin());
-									serverDetail.setMax(clientDetail.getMax());
-									getWhstrategydetailDAO().merge(serverDetail);
-								} else if (clientDetail.getTime().before(serverDetail.getTime())) {
-									clientDetail.setMin(serverDetail.getMin());
-									clientDetail.setMax(serverDetail.getMax());
-									switch (clientDetail.getWhstrategytype().getName()) {
-									case "时间":
-										c.setStartHh((byte) (serverDetail.getMin() / 60));
-										c.setStartMm((byte) (serverDetail.getMin() % 60));
-										c.setShutHh((byte) (serverDetail.getMax() / 60));
-										c.setShutMm((byte) (serverDetail.getMax() % 60));
-										break;
-									case "水位":
-										c.setMinlevel(serverDetail.getMin());
-										c.setMaxlevel(serverDetail.getMax());
-										break;
-									case "温度":
-										c.setOperatingtemp(serverDetail.getMin());
-										c.setShutTemp(serverDetail.getMax());
-										break;
+							if (clientDetail.getWhstrategytype().equals(serverDetail.getWhstrategytype())) {
+								if (clientDetail.equals(serverDetail)) {
+									break;
+								} else {
+									if (clientDetail.getTime().after(serverDetail.getTime())) {
+										serverDetail.setMin(clientDetail.getMin());
+										serverDetail.setMax(clientDetail.getMax());
+										serverDetail.setTime(clientDetail.getTime());
+										getWhstrategydetailDAO().merge(serverDetail);
+									} else if (clientDetail.getTime().before(serverDetail.getTime())) {
+										clientDetail.setMin(serverDetail.getMin());
+										clientDetail.setMax(serverDetail.getMax());
+										clientDetail.setTime(serverDetail.getTime());
+										switch (clientDetail.getWhstrategytype().getName()) {
+										case "时间":
+											c.setStartHh((byte) (serverDetail.getMin() / 60));
+											c.setStartMm((byte) (serverDetail.getMin() % 60));
+											c.setShutHh((byte) (serverDetail.getMax() / 60));
+											c.setShutMm((byte) (serverDetail.getMax() % 60));
+											break;
+										case "水位":
+											c.setMinlevel(serverDetail.getMin());
+											c.setMaxlevel(serverDetail.getMax());
+											break;
+										case "温度":
+											c.setOperatingtemp(serverDetail.getMin());
+											c.setShutTemp(serverDetail.getMax());
+											break;
+										}
+										getCelveDAO().merge(c);
 									}
-									getCelveDAO().merge(c);
 								}
 							}
 						}

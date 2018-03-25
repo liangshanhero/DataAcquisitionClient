@@ -21,6 +21,12 @@ public class Whstrategydetail implements java.io.Serializable {
 
 	// Fields
 
+	@Override
+	public String toString() {
+		return "Whstrategydetail [id=" + id + ", whstrategytype=" + whstrategytype + ", whstrategy=" + whstrategy
+				+ ", max=" + max + ", min=" + min + ", time=" + time + "]";
+	}
+
 	private Long id;
 	private Whstrategytype whstrategytype;
 	private Whstrategy whstrategy;
@@ -63,7 +69,7 @@ public class Whstrategydetail implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "whstrategytype")
 
 	public Whstrategytype getWhstrategytype() {
@@ -74,7 +80,7 @@ public class Whstrategydetail implements java.io.Serializable {
 		this.whstrategytype = whstrategytype;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "whstrategy")
 
 	public Whstrategy getWhstrategy() {

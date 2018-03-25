@@ -27,6 +27,11 @@ public class Whdevice implements java.io.Serializable {
 	// Fields
 
 	@Override
+	public String toString() {
+		return "Whdevice [id=" + id + ", number=" + number + "]";
+	}
+
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
