@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 
 import org.springframework.batch.item.ItemWriter;
 
+import cn.edu.scau.cmi.wuweijie.Bootstrap;
 import cn.edu.scau.cmi.wuweijie.application.ConfigureController;
 import cn.edu.scau.cmi.wuweijie.entity.client.Data;
 import cn.edu.scau.cmi.wuweijie.entity.server.ProjectDAO;
@@ -82,7 +83,7 @@ public class SiteDataItemWriter implements ItemWriter<Data> {
 					area = buildings.get(0);
 				} else {
 					area = new Whbuilding("默认");
-					area.setProject(ConfigureController.currentProject);
+					area.setProject(Bootstrap.currentProject);
 					whbuildingDAO.save(area);
 				}
 				device.setWhbuilding(area);
